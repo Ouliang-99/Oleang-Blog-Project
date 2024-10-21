@@ -1,5 +1,7 @@
 import "./App.css";
-import { HeroSection, NavBar,Footer, ArticleSection } from "./component/semantic";
+import { HeroSection, NavBar,Footer,} from "./component/semantic";
+import {ArticleSection, AllBlogCard} from "./component/ArticleSection"
+
 
 
 function App() {
@@ -8,6 +10,7 @@ function App() {
       <NavBar />
       <HeroSection />
       <ArticleSection/>
+      <AllBlogCard/>
       <Footer/>
     </>
   );
