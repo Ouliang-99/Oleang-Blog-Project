@@ -1,11 +1,14 @@
 import "./App.css";
-import { HeroSection, NavBar } from "./component/semantic";
+import { HeroSection, NavBar,Footer, ArticleSection } from "./component/semantic";
+
 
 function App() {
   return (
     <>
       <NavBar />
       <HeroSection />
+      <ArticleSection/>
+      <Footer/>
     </>
   );
 }
