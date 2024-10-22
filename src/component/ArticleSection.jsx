@@ -12,154 +12,184 @@ import {
   MenubarSubContent,
   MenubarSubTrigger,
   MenubarTrigger,
-} from "@/components/ui/menubar"
-import { Input } from "@/components/ui/input"
-import * as React from "react"
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/menubar";
+import { Input } from "@/components/ui/input";
+import * as React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import { blogPosts } from "../data/blogPosts.js";
 
 export function ArticleSection() {
+  const categories = ["Highlight", "Cat", "Inspiration", "General"];
+
   return (
     <>
       <h1 className="flex text-xl font-semibold py-5">Latest articles</h1>
       <div className="bg-Brown-200 p-6 hidden sm:block">
         <Menubar className="flex justify-between items-center">
           <div className="flex space-x-4">
-            <MenubarMenu>
-              <MenubarTrigger>Highlight</MenubarTrigger>
-              <MenubarContent>
-                <MenubarItem>
-                  New Tab <MenubarShortcut>⌘T</MenubarShortcut>
-                </MenubarItem>
-                <MenubarItem>
-                  New Window <MenubarShortcut>⌘N</MenubarShortcut>
-                </MenubarItem>
-                <MenubarItem disabled>New Incognito Window</MenubarItem>
-                <MenubarSeparator />
-                <MenubarSub>
-                  <MenubarSubTrigger>Share</MenubarSubTrigger>
-                  <MenubarSubContent>
-                    <MenubarItem>Email link</MenubarItem>
-                    <MenubarItem>Messages</MenubarItem>
-                    <MenubarItem>Notes</MenubarItem>
-                  </MenubarSubContent>
-                </MenubarSub>
-                <MenubarSeparator />
-                <MenubarItem>
-                  Print... <MenubarShortcut>⌘P</MenubarShortcut>
-                </MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
-            <MenubarMenu>
-              <MenubarTrigger>Cat</MenubarTrigger>
-              <MenubarContent>
-                <MenubarItem>
-                  Undo <MenubarShortcut>⌘Z</MenubarShortcut>
-                </MenubarItem>
-                <MenubarItem>
-                  Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut>
-                </MenubarItem>
-                <MenubarSeparator />
-                <MenubarSub>
-                  <MenubarSubTrigger>Find</MenubarSubTrigger>
-                  <MenubarSubContent>
-                    <MenubarItem>Search the web</MenubarItem>
-                    <MenubarSeparator />
-                    <MenubarItem>Find...</MenubarItem>
-                    <MenubarItem>Find Next</MenubarItem>
-                    <MenubarItem>Find Previous</MenubarItem>
-                  </MenubarSubContent>
-                </MenubarSub>
-                <MenubarSeparator />
-                <MenubarItem>Cut</MenubarItem>
-                <MenubarItem>Copy</MenubarItem>
-                <MenubarItem>Paste</MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
-            <MenubarMenu>
-              <MenubarTrigger>Inspiration</MenubarTrigger>
-              <MenubarContent>
-                <MenubarCheckboxItem>
-                  Always Show Bookmarks Bar
-                </MenubarCheckboxItem>
-                <MenubarCheckboxItem checked>
-                  Always Show Full URLs
-                </MenubarCheckboxItem>
-                <MenubarSeparator />
-                <MenubarItem inset>
-                  Reload <MenubarShortcut>⌘R</MenubarShortcut>
-                </MenubarItem>
-                <MenubarItem disabled inset>
-                  Force Reload <MenubarShortcut>⇧⌘R</MenubarShortcut>
-                </MenubarItem>
-                <MenubarSeparator />
-                <MenubarItem inset>Toggle Fullscreen</MenubarItem>
-                <MenubarSeparator />
-                <MenubarItem inset>Hide Sidebar</MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
-            <MenubarMenu>
-              <MenubarTrigger>General</MenubarTrigger>
-              <MenubarContent>
-                <MenubarRadioGroup value="benoit">
-                  <MenubarRadioItem value="andy">Andy</MenubarRadioItem>
-                  <MenubarRadioItem value="benoit">Benoit</MenubarRadioItem>
-                  <MenubarRadioItem value="Luis">Luis</MenubarRadioItem>
-                </MenubarRadioGroup>
-                <MenubarSeparator />
-                <MenubarItem inset>Edit...</MenubarItem>
-                <MenubarSeparator />
-                <MenubarItem inset>Add Profile...</MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
+            {categories.map((category, index) => (
+              <MenubarMenu key={index}>
+                <MenubarTrigger>{category}</MenubarTrigger>
+                <MenubarContent>
+                  {category === "Highlight" && (
+                    <>
+                      <MenubarItem>
+                        New Tab <MenubarShortcut>⌘T</MenubarShortcut>
+                      </MenubarItem>
+                      <MenubarItem>
+                        New Window <MenubarShortcut>⌘N</MenubarShortcut>
+                      </MenubarItem>
+                      <MenubarItem disabled>New Incognito Window</MenubarItem>
+                      <MenubarSeparator />
+                      <MenubarSub>
+                        <MenubarSubTrigger>Share</MenubarSubTrigger>
+                        <MenubarSubContent>
+                          <MenubarItem>Email link</MenubarItem>
+                          <MenubarItem>Messages</MenubarItem>
+                          <MenubarItem>Notes</MenubarItem>
+                        </MenubarSubContent>
+                      </MenubarSub>
+                      <MenubarSeparator />
+                      <MenubarItem>
+                        Print... <MenubarShortcut>⌘P</MenubarShortcut>
+                      </MenubarItem>
+                    </>
+                  )}
+                  {category === "Cat" && (
+                    <>
+                      <MenubarItem>
+                        Undo <MenubarShortcut>⌘Z</MenubarShortcut>
+                      </MenubarItem>
+                      <MenubarItem>
+                        Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut>
+                      </MenubarItem>
+                      <MenubarSeparator />
+                      <MenubarSub>
+                        <MenubarSubTrigger>Find</MenubarSubTrigger>
+                        <MenubarSubContent>
+                          <MenubarItem>Search the web</MenubarItem>
+                          <MenubarSeparator />
+                          <MenubarItem>Find...</MenubarItem>
+                          <MenubarItem>Find Next</MenubarItem>
+                          <MenubarItem>Find Previous</MenubarItem>
+                        </MenubarSubContent>
+                      </MenubarSub>
+                      <MenubarSeparator />
+                      <MenubarItem>Cut</MenubarItem>
+                      <MenubarItem>Copy</MenubarItem>
+                      <MenubarItem>Paste</MenubarItem>
+                    </>
+                  )}
+                  {category === "Inspiration" && (
+                    <>
+                      <MenubarCheckboxItem>
+                        Always Show Bookmarks Bar
+                      </MenubarCheckboxItem>
+                      <MenubarCheckboxItem checked>
+                        Always Show Full URLs
+                      </MenubarCheckboxItem>
+                      <MenubarSeparator />
+                      <MenubarItem inset>
+                        Reload <MenubarShortcut>⌘R</MenubarShortcut>
+                      </MenubarItem>
+                      <MenubarItem disabled inset>
+                        Force Reload <MenubarShortcut>⇧⌘R</MenubarShortcut>
+                      </MenubarItem>
+                      <MenubarSeparator />
+                      <MenubarItem inset>Toggle Fullscreen</MenubarItem>
+                      <MenubarSeparator />
+                      <MenubarItem inset>Hide Sidebar</MenubarItem>
+                    </>
+                  )}
+                  {category === "General" && (
+                    <>
+                      <MenubarRadioGroup value="benoit">
+                        <MenubarRadioItem value="andy">Andy</MenubarRadioItem>
+                        <MenubarRadioItem value="benoit">
+                          Benoit
+                        </MenubarRadioItem>
+                        <MenubarRadioItem value="Luis">Luis</MenubarRadioItem>
+                      </MenubarRadioGroup>
+                      <MenubarSeparator />
+                      <MenubarItem inset>Edit...</MenubarItem>
+                      <MenubarSeparator />
+                      <MenubarItem inset>Add Profile...</MenubarItem>
+                    </>
+                  )}
+                </MenubarContent>
+              </MenubarMenu>
+            ))}
           </div>
-          <Input
-            className="md:w-72 ml-10 w-40 "
-            type="text"
-            placeholder="Search"
-          />
+          <div className="flex flex-col">
+            <div className="relative">
+              <Input className="pr-10" type="text" placeholder="Search" />
+              <span className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-gray-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 4a6 6 0 100 12 6 6 0 000-12zM16 16l4 4"
+                  />
+                </svg>
+              </span>
+            </div>
+          </div>
         </Menubar>
       </div>
+
       <div className="bg-Brown-200 flex justify-center pt-5 sm:hidden">
         <Card className="w-[400px]">
           <CardContent>
             <form>
               <div className="grid w-full items-center gap-4">
                 <div className="flex flex-col space-y-1.5 mt-9">
-                  <Select>
-                    <SelectTrigger id="framework">
-                      <SelectValue placeholder="Select" />
-                    </SelectTrigger>
-                    <SelectContent position="popper">
-                      <SelectItem value="next">Next.js</SelectItem>
-                      <SelectItem value="sveltekit">SvelteKit</SelectItem>
-                      <SelectItem value="astro">Astro</SelectItem>
-                      <SelectItem value="nuxt">Nuxt.js</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <div className="relative">
+                    <Input className="pr-10" type="text" placeholder="Search" />
+                    <span className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 text-gray-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 4a6 6 0 100 12 6 6 0 000-12zM16 16l4 4"
+                        />
+                      </svg>
+                    </span>
+                  </div>
                 </div>
                 <div className="flex flex-col space-y-1.5 text-left">
-                  <Label htmlFor="framework">Framework</Label>
+                  <Label htmlFor="category">Select a category</Label>
                   <Select>
-                    <SelectTrigger id="framework">
+                    <SelectTrigger id="category">
                       <SelectValue placeholder="Select" />
                     </SelectTrigger>
                     <SelectContent position="popper">
-                      <SelectItem value="next">Next.js</SelectItem>
-                      <SelectItem value="sveltekit">SvelteKit</SelectItem>
-                      <SelectItem value="astro">Astro</SelectItem>
-                      <SelectItem value="nuxt">Nuxt.js</SelectItem>
+                      {categories.map((category, index) => (
+                        <SelectItem key={index} value={category.toLowerCase()}>
+                          {category}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -218,13 +248,13 @@ export function AllBlogCard() {
     <div className="flex flex-wrap justify-between ">
       {blogPosts.map((post, index) => (
         <div className="w-full sm:w-1/2 lg:w-1/3 p-6" key={index}>
-          <BlogCard 
-            image={post.image} 
-            category={post.category} 
-            title={post.title} 
-            description={post.description} 
-            author={post.author} 
-            date={post.date} 
+          <BlogCard
+            image={post.image}
+            category={post.category}
+            title={post.title}
+            description={post.description}
+            author={post.author}
+            date={post.date}
           />
         </div>
       ))}
