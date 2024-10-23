@@ -1,15 +1,20 @@
-import { LinkedinIcon, GithubIcon, GoogleIcon,} from "./icon";
-
-
+import { LinkedinIcon, GithubIcon, GoogleIcon, HamburgerIcon } from "./icon";
+import { useState } from "react";
 
 export function NavBar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <nav className="flex items-center justify-between py-4 px-8 bg-Brown-100 border-b ">
+    <nav className="flex items-center justify-between py-4 px-8 bg-Brown-100 border-b">
       <a href="/" className="text-2xl font-bold">
         Thomson P<span className="text-green-500">.</span>
       </a>
       <div className="hidden md:flex space-x-4">
-        <a href="/login" className="px-9 py-2  rounded-full border">
+        <a href="/login" className="px-9 py-2 rounded-full border">
           Log in
         </a>
         <a
@@ -19,10 +24,31 @@ export function NavBar() {
           Sign up
         </a>
       </div>
-      <button className="md:hidden">Menu</button>
+      <button className="md:hidden" onClick={toggleDropdown}>
+        <HamburgerIcon />
+      </button>
+      {isOpen && (
+        <div className="absolute top-16 mt-8 left-0 right-0 mx-auto w-5/6 bg-white rounded-lg shadow-lg md:hidden">
+          <div className="flex flex-col space-y-2 p-4">
+            <a
+              href="/login"
+              className="px-4 py-2 rounded-full border text-center hover:bg-gray-100"
+            >
+              Log in
+            </a>
+            <a
+              href="/signup"
+              className="px-4 py-2 bg-gray-900 text-white rounded-full hover:bg-gray-700 transition-colors text-center"
+            >
+              Sign up
+            </a>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
+
 export function HeroSection() {
   return (
     <main className="container px-4 py-8 lg:py-16 mx-auto">
@@ -76,4 +102,3 @@ export function Footer() {
     </div>
   );
 }
-
