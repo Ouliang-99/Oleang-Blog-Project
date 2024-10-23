@@ -1,18 +1,4 @@
-import {
-  Menubar,
-  MenubarCheckboxItem,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarRadioGroup,
-  MenubarRadioItem,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarSub,
-  MenubarSubContent,
-  MenubarSubTrigger,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
+import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import { Input } from "@/components/ui/input";
 import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,9 +11,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { blogPosts } from "../data/blogPosts.js";
+import { useState } from "react";
 
 export function ArticleSection() {
   const categories = ["Highlight", "Cat", "Inspiration", "General"];
+  const [activeIndex, setActiveIndex] = useState(null);
 
   return (
     <>
@@ -37,94 +25,19 @@ export function ArticleSection() {
           <div className="flex space-x-4">
             {categories.map((category, index) => (
               <MenubarMenu key={index}>
-                <MenubarTrigger>{category}</MenubarTrigger>
-                <MenubarContent>
-                  {category === "Highlight" && (
-                    <>
-                      <MenubarItem>
-                        New Tab <MenubarShortcut>⌘T</MenubarShortcut>
-                      </MenubarItem>
-                      <MenubarItem>
-                        New Window <MenubarShortcut>⌘N</MenubarShortcut>
-                      </MenubarItem>
-                      <MenubarItem disabled>New Incognito Window</MenubarItem>
-                      <MenubarSeparator />
-                      <MenubarSub>
-                        <MenubarSubTrigger>Share</MenubarSubTrigger>
-                        <MenubarSubContent>
-                          <MenubarItem>Email link</MenubarItem>
-                          <MenubarItem>Messages</MenubarItem>
-                          <MenubarItem>Notes</MenubarItem>
-                        </MenubarSubContent>
-                      </MenubarSub>
-                      <MenubarSeparator />
-                      <MenubarItem>
-                        Print... <MenubarShortcut>⌘P</MenubarShortcut>
-                      </MenubarItem>
-                    </>
-                  )}
-                  {category === "Cat" && (
-                    <>
-                      <MenubarItem>
-                        Undo <MenubarShortcut>⌘Z</MenubarShortcut>
-                      </MenubarItem>
-                      <MenubarItem>
-                        Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut>
-                      </MenubarItem>
-                      <MenubarSeparator />
-                      <MenubarSub>
-                        <MenubarSubTrigger>Find</MenubarSubTrigger>
-                        <MenubarSubContent>
-                          <MenubarItem>Search the web</MenubarItem>
-                          <MenubarSeparator />
-                          <MenubarItem>Find...</MenubarItem>
-                          <MenubarItem>Find Next</MenubarItem>
-                          <MenubarItem>Find Previous</MenubarItem>
-                        </MenubarSubContent>
-                      </MenubarSub>
-                      <MenubarSeparator />
-                      <MenubarItem>Cut</MenubarItem>
-                      <MenubarItem>Copy</MenubarItem>
-                      <MenubarItem>Paste</MenubarItem>
-                    </>
-                  )}
-                  {category === "Inspiration" && (
-                    <>
-                      <MenubarCheckboxItem>
-                        Always Show Bookmarks Bar
-                      </MenubarCheckboxItem>
-                      <MenubarCheckboxItem checked>
-                        Always Show Full URLs
-                      </MenubarCheckboxItem>
-                      <MenubarSeparator />
-                      <MenubarItem inset>
-                        Reload <MenubarShortcut>⌘R</MenubarShortcut>
-                      </MenubarItem>
-                      <MenubarItem disabled inset>
-                        Force Reload <MenubarShortcut>⇧⌘R</MenubarShortcut>
-                      </MenubarItem>
-                      <MenubarSeparator />
-                      <MenubarItem inset>Toggle Fullscreen</MenubarItem>
-                      <MenubarSeparator />
-                      <MenubarItem inset>Hide Sidebar</MenubarItem>
-                    </>
-                  )}
-                  {category === "General" && (
-                    <>
-                      <MenubarRadioGroup value="benoit">
-                        <MenubarRadioItem value="andy">Andy</MenubarRadioItem>
-                        <MenubarRadioItem value="benoit">
-                          Benoit
-                        </MenubarRadioItem>
-                        <MenubarRadioItem value="Luis">Luis</MenubarRadioItem>
-                      </MenubarRadioGroup>
-                      <MenubarSeparator />
-                      <MenubarItem inset>Edit...</MenubarItem>
-                      <MenubarSeparator />
-                      <MenubarItem inset>Add Profile...</MenubarItem>
-                    </>
-                  )}
-                </MenubarContent>
+                <MenubarTrigger
+                  onClick={() => setActiveIndex(index)}
+                  className={`${
+                    activeIndex === index
+                      ? "bg-Brown-500 text-white" 
+                      : "bg-transparent hover:bg-Brown-300"
+                  } transition-colors duration-200 active:bg-Brown-500`}
+                  style={{
+                    pointerEvents: activeIndex === index ? "none" : "auto",
+                  }}
+                >
+                  {category}
+                </MenubarTrigger>
               </MenubarMenu>
             ))}
           </div>
