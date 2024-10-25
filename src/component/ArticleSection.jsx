@@ -10,12 +10,48 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { blogPosts } from "../data/blogPosts.js";
-import { useState } from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 export function ArticleSection() {
   const categories = ["Highlight", "Cat", "Inspiration", "General"];
   const [activeIndex, setActiveIndex] = useState(null);
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const fetchPosts = async (category = "", page = 1, limit = 6) => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await axios.get(
+        "https://blog-post-project-api.vercel.app/posts",
+        {
+          params: {
+            category,
+            page,
+            limit,
+          },
+        }
+      );
+      setBlogPosts(response.data.posts || []);
+    } catch (err) {
+      console.error("Error fetching posts:", err);
+      setError("Error fetching posts");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  const handleCategoryClick = (category) => {
+    console.log("Selected category:", JSON.stringify(category));
+    setActiveIndex(category);
+    fetchPosts(category.toLowerCase());
+  };
 
   return (
     <>
@@ -26,15 +62,12 @@ export function ArticleSection() {
             {categories.map((category, index) => (
               <MenubarMenu key={index}>
                 <MenubarTrigger
-                  onClick={() => setActiveIndex(index)}
+                  onClick={() => handleCategoryClick(category)}
                   className={`${
-                    activeIndex === index
-                      ? "bg-Brown-500 text-white" 
+                    activeIndex === category
+                      ? "bg-Brown-500 text-white"
                       : "bg-transparent hover:bg-Brown-300"
                   } transition-colors duration-200 active:bg-Brown-500`}
-                  style={{
-                    pointerEvents: activeIndex === index ? "none" : "auto",
-                  }}
                 >
                   {category}
                 </MenubarTrigger>
@@ -93,7 +126,11 @@ export function ArticleSection() {
                 </div>
                 <div className="flex flex-col space-y-1.5 text-left">
                   <Label htmlFor="category">Select a category</Label>
-                  <Select>
+                  <Select
+                    onValueChange={(value) => {
+                      handleCategoryClick(value);
+                    }}
+                  >
                     <SelectTrigger id="category">
                       <SelectValue placeholder="Select" />
                     </SelectTrigger>
@@ -111,11 +148,19 @@ export function ArticleSection() {
           </CardContent>
         </Card>
       </div>
+
+      <AllBlogCard blogPosts={blogPosts} loading={loading} error={error} />
     </>
   );
 }
 
 function BlogCard(props) {
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { day: "2-digit", month: "short", year: "numeric" };
+    return date.toLocaleDateString("en-GB", options).replace(/,/, "");
+  };
+
   return (
     <div>
       <div className="flex flex-col gap-4 mt-14">
@@ -148,7 +193,7 @@ function BlogCard(props) {
             />
             <span>{props.author}</span>
             <span className="mx-2 text-gray-300">|</span>
-            <span>{props.date}</span>
+            <span>{formatDate(props.date)}</span>{" "}
           </div>
         </div>
       </div>
@@ -156,21 +201,33 @@ function BlogCard(props) {
   );
 }
 
-export function AllBlogCard() {
+export const AllBlogCard = ({ blogPosts, loading, error }) => {
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>{error}</div>;
+  }
+  if (!blogPosts || (Array.isArray(blogPosts) && blogPosts.length === 0)) {
+    return <div>ไม่มีข้อมูลบล็อก</div>;
+  }
+
   return (
-    <div className="flex flex-wrap justify-between ">
-      {blogPosts.map((post, index) => (
-        <div className="w-full sm:w-1/2 lg:w-1/3 p-6" key={index}>
+    <div className="flex flex-wrap justify-between">
+      {" "}
+      {blogPosts.map((blog) => (
+        <div key={blog.id} className="w-full sm:w-1/3 p-2">
+          {" "}
           <BlogCard
-            image={post.image}
-            category={post.category}
-            title={post.title}
-            description={post.description}
-            author={post.author}
-            date={post.date}
+            image={blog.image}
+            title={blog.title}
+            description={blog.description}
+            category={blog.category}
+            author={blog.author}
+            date={blog.date}
           />
         </div>
       ))}
     </div>
   );
-}
+};
