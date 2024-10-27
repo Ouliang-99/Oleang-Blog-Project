@@ -19,8 +19,16 @@ export function ArticleSection() {
   const [blogPosts, setBlogPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [limitPage, setLimitPage] = useState(6);
 
-  const fetchPosts = async (category = "", page = 1, limit = 6) => {
+  const loadMorePost = (event) => {
+    event.preventDefault();
+    const newLimit = limitPage + 6;
+    setLimitPage(newLimit);
+    fetchPosts(activeIndex, 1, newLimit);
+  };
+
+  const fetchPosts = async (category = "", page = 1, limit = limitPage) => {
     setLoading(true);
     setError("");
     try {
@@ -50,7 +58,8 @@ export function ArticleSection() {
   const handleCategoryClick = (category) => {
     console.log("Selected category:", JSON.stringify(category));
     setActiveIndex(category);
-    fetchPosts(category.toLowerCase());
+    setLimitPage(6);
+    fetchPosts(category.toLowerCase(), 1, 6);
   };
 
   return (
@@ -149,7 +158,12 @@ export function ArticleSection() {
         </Card>
       </div>
 
-      <AllBlogCard blogPosts={blogPosts} loading={loading} error={error} />
+      <AllBlogCard
+        blogPosts={blogPosts}
+        loading={loading}
+        error={error}
+        loadMorePost={loadMorePost}
+      />
     </>
   );
 }
@@ -201,7 +215,7 @@ function BlogCard(props) {
   );
 }
 
-export const AllBlogCard = ({ blogPosts, loading, error }) => {
+export const AllBlogCard = ({ blogPosts, loading, error, loadMorePost }) => {
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -209,15 +223,13 @@ export const AllBlogCard = ({ blogPosts, loading, error }) => {
     return <div>{error}</div>;
   }
   if (!blogPosts || (Array.isArray(blogPosts) && blogPosts.length === 0)) {
-    return <div>ไม่มีข้อมูลบล็อก</div>;
+    return <div>Not have a detail for this category</div>;
   }
 
   return (
     <div className="flex flex-wrap justify-between">
-      {" "}
       {blogPosts.map((blog) => (
         <div key={blog.id} className="w-full sm:w-1/3 p-2">
-          {" "}
           <BlogCard
             image={blog.image}
             title={blog.title}
@@ -228,6 +240,14 @@ export const AllBlogCard = ({ blogPosts, loading, error }) => {
           />
         </div>
       ))}
+      <div className="w-full flex justify-center items-center">
+        <button
+          onClick={(event) => loadMorePost(event)}
+          className="p-5 bg-Brown-300 rounded-lg my-10 hover:bg-Brown-400"
+        >
+          Load More Post
+        </button>
+      </div>
     </div>
   );
 };
