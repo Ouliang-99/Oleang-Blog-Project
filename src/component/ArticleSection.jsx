@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function ArticleSection() {
   const categories = ["Highlight", "Cat", "Inspiration", "General"];
@@ -168,34 +169,44 @@ export function ArticleSection() {
   );
 }
 
-function BlogCard(props) {
+export function BlogCard(props) {
+  const navigate = useNavigate();
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = { day: "2-digit", month: "short", year: "numeric" };
     return date.toLocaleDateString("en-GB", options).replace(/,/, "");
   };
 
+  const handleCardClick = () => {
+    navigate(`/posts/${props.id}`);
+  };
+
   return (
     <div>
       <div className="flex flex-col gap-4 mt-14">
-        <a href="#" className="relative h-[212px] sm:h-[360px]">
+        <div
+          onClick={handleCardClick}
+          className="relative h-[212px] sm:h-[360px] cursor-pointer"
+        >
           <img
             className="w-full h-full object-cover rounded-md"
             src={props.image}
             alt={props.title}
           />
-        </a>
+        </div>
         <div className="flex flex-col">
           <div className="flex">
             <span className="bg-green-200 rounded-full px-3 py-1 text-sm font-semibold text-green-600 mb-2">
               {props.category}
             </span>
           </div>
-          <a href="#">
-            <h2 className="text-start font-bold text-xl mb-2 line-clamp-2 hover:underline">
-              {props.title}
-            </h2>
-          </a>
+          <h2
+            onClick={handleCardClick}
+            className="text-start font-bold text-xl mb-2 line-clamp-2 hover:underline cursor-pointer"
+          >
+            {props.title}
+          </h2>
           <p className="text-muted-foreground text-sm mb-4 flex-grow line-clamp-3">
             {props.description}
           </p>
@@ -227,10 +238,11 @@ export const AllBlogCard = ({ blogPosts, loading, error, loadMorePost }) => {
   }
 
   return (
-    <div className="flex flex-wrap justify-between">
+    <div className="flex flex-wrap justify-between ">
       {blogPosts.map((blog) => (
-        <div key={blog.id} className="w-full sm:w-1/3 p-2">
+        <div key={blog.id} className="w-full sm:w-1/3 p-2 hover:scale-105">
           <BlogCard
+            id={blog.id}
             image={blog.image}
             title={blog.title}
             description={blog.description}
@@ -245,7 +257,7 @@ export const AllBlogCard = ({ blogPosts, loading, error, loadMorePost }) => {
           onClick={(event) => loadMorePost(event)}
           className="p-5 bg-Brown-300 rounded-lg my-10 hover:bg-Brown-400"
         >
-          Load More Post
+          Load More Posts
         </button>
       </div>
     </div>
