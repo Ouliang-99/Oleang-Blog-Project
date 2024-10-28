@@ -1,5 +1,6 @@
 import { LinkedinIcon, GithubIcon, GoogleIcon, HamburgerIcon } from "./icon";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -88,6 +89,7 @@ export function HeroSection() {
 }
 
 export function Footer() {
+  const navigate = useNavigate();
   return (
     <div className="bg-Brown-200 p-10">
       <div className="flex justify-between flex-col items-center sm:flex-row">
@@ -97,7 +99,9 @@ export function Footer() {
           <GithubIcon />
           <GoogleIcon />
         </div>
-        <p className="underline mt-5 sm:mt-auto">Home Page</p>
+        <button onClick={() => navigate("/")} className="underline mt-5 sm:mt-auto">
+          Home Page
+        </button>
       </div>
     </div>
   );
