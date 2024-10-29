@@ -91,6 +91,7 @@ export function ArticleSection() {
   return (
     <>
       <h1 className="flex text-xl font-semibold py-5">Latest articles</h1>
+
       <div className="bg-Brown-200 p-6 hidden sm:block">
         <Menubar className="flex justify-between items-center">
           <div className="flex space-x-4">
@@ -140,7 +141,12 @@ export function ArticleSection() {
               <div className="grid w-full items-center gap-4">
                 <div className="flex flex-col space-y-1.5 mt-9">
                   <div className="relative">
-                    <Input className="pr-10" type="text" placeholder="Search" />
+                    <Input
+                      onChange={handleSearchChange}
+                      className="pr-10"
+                      type="text"
+                      placeholder="Search"
+                    />
                     <span className="absolute right-3 top-1/2 transform -translate-y-1/2">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -157,6 +163,20 @@ export function ArticleSection() {
                         />
                       </svg>
                     </span>
+                    {searchResults.length > 0 &&
+                      keywordQuery && (
+                        <div className="absolute z-10 top-full bg-white w-full border border-gray-300">
+                          {searchResults.map((post) => (
+                            <div
+                              key={post.id}
+                              onClick={() => navigate(`/posts/${post.id}`)}
+                              className="p-2 hover:bg-gray-200 cursor-pointer"
+                            >
+                              {post.title}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                   </div>
                 </div>
                 <div className="flex flex-col space-y-1.5 text-left">
@@ -255,8 +275,8 @@ export const AllBlogCard = ({ blogPosts, loading, error, loadMorePost }) => {
   if (loading) {
     return (
       <div className="flex flex-col items-center">
-          <LoadingSpinner />
-          <h1>Loading...</h1>
+        <LoadingSpinner />
+        <h1>Loading...</h1>
       </div>
     );
   }
