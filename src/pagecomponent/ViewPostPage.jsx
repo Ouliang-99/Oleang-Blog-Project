@@ -93,32 +93,35 @@ export function ViewPostPage() {
           <span>{new Date(post.date).toLocaleDateString()}</span>
         </div>
       </div>
-      <div className="flex justify-between items-center bg-Brown-200 p-6 rounded-2xl gap-2">
+      <div className="flex flex-col sm:flex-row justify-between items-center bg-Brown-200 p-6 rounded-2xl gap-2 min-w-80">
         <button
           onClick={handleLike}
-          className="gap-2 flex items-center bg-white space-x-4 mr-auto border border-black p-2 px-6 rounded-3xl hover:bg-slate-100"
+          className="mb-2 sm:mb-0 w-full justify-center sm:w-28 gap-2 flex items-center bg-white space-x-4 border border-black p-2 px-6 rounded-3xl hover:bg-slate-100"
         >
           <HappyFaceIcon />
           {post.likes}
         </button>
-        <button
-          onClick={copyToClipboard}
-          className="flex items-center bg-white border border-black p-2 px-6 rounded-3xl hover:bg-slate-100"
-        >
-          <CopyIcon />
-          Copy
-        </button>
-        <button
-          onClick={() => window.open("https://www.facebook.com/", "_blank")}
-        >
-          <FacebookIconColor />
-        </button>
-        <button>
-          <LinkedinIconColor />
-        </button>
-        <button>
-          <TwitterIconColor />
-        </button>
+        <div className="flex gap-2 w-full sm:w-auto justify-between">
+          <button
+            onClick={copyToClipboard}
+            className="flex items-center bg-white border border-black p-2 px-6 rounded-3xl hover:bg-slate-100"
+          >
+            <CopyIcon />
+            Copy
+          </button>
+          <button
+            onClick={() => window.open("https://www.facebook.com/", "_blank")}
+            className="flex items-center"
+          >
+            <FacebookIconColor />
+          </button>
+          <button className="flex items-center">
+            <LinkedinIconColor />
+          </button>
+          <button className="flex items-center">
+            <TwitterIconColor />
+          </button>
+        </div>
       </div>
       <p className="text-left font-semibold text-xl mt-4">Comment</p>
       <textarea
@@ -168,7 +171,7 @@ export function ViewPostPage() {
       )}
 
       {showAlert && (
-        <div className="text-left fixed bottom-4 right-4 bg-green-500 text-white p-6 rounded-md shadow-md">
+        <div className="text-left fixed bottom-4 right-4 bg-green-500 text-white p-6 rounded-md">
           <h1>Copied!</h1>
           <p>This article has been copied to your clipboard.</p>
         </div>
