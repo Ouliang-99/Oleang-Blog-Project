@@ -13,6 +13,7 @@ import {
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { LoadingSpinner } from "@/component/icon";
 
 export function ArticleSection() {
   const categories = ["Highlight", "Cat", "Inspiration", "General"];
@@ -21,6 +22,8 @@ export function ArticleSection() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [limitPage, setLimitPage] = useState(6);
+  const [keywordQuery, setKeywordQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   const loadMorePost = (event) => {
     event.preventDefault();
@@ -34,7 +37,7 @@ export function ArticleSection() {
     setError("");
     try {
       const response = await axios.get(
-        "https://blog-post-project-api.vercel.app/posts",
+        `https://blog-post-project-api.vercel.app/posts?keyword=${keywordQuery}`,
         {
           params: {
             category,
@@ -52,16 +55,38 @@ export function ArticleSection() {
     }
   };
 
+  const searchPosts = async (query) => {
+    if (query) {
+      try {
+        const response = await axios.get(
+          `https://blog-post-project-api.vercel.app/posts?keyword=${query}`
+        );
+        setSearchResults(response.data.posts || []);
+      } catch (err) {
+        console.error("Error fetching search results:", err);
+      }
+    } else {
+      setSearchResults([]);
+    }
+  };
+
   useEffect(() => {
-    fetchPosts();
-  }, []);
+    fetchPosts(activeIndex, 1, limitPage);
+  }, [keywordQuery, activeIndex, limitPage]);
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setKeywordQuery(value);
+    searchPosts(value);
+  };
 
   const handleCategoryClick = (category) => {
-    console.log("Selected category:", JSON.stringify(category));
     setActiveIndex(category);
     setLimitPage(6);
     fetchPosts(category.toLowerCase(), 1, 6);
   };
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -84,26 +109,26 @@ export function ArticleSection() {
               </MenubarMenu>
             ))}
           </div>
-          <div className="flex flex-col">
-            <div className="relative">
-              <Input className="pr-10" type="text" placeholder="Search" />
-              <span className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-gray-500"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 4a6 6 0 100 12 6 6 0 000-12zM16 16l4 4"
-                  />
-                </svg>
-              </span>
-            </div>
+          <div className="flex flex-col relative">
+            <Input
+              onChange={handleSearchChange}
+              className="pr-10"
+              type="text"
+              placeholder="Search"
+            />
+            {searchResults.length > 0 && keywordQuery && (
+              <div className="absolute z-10 top-10 bg-white w-full border border-gray-300">
+                {searchResults.map((post) => (
+                  <div
+                    key={post.id}
+                    onClick={() => navigate(`/posts/${post.id}`)}
+                    className="p-2 hover:bg-gray-200 cursor-pointer"
+                  >
+                    {post.title}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </Menubar>
       </div>
@@ -228,13 +253,18 @@ export function BlogCard(props) {
 
 export const AllBlogCard = ({ blogPosts, loading, error, loadMorePost }) => {
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col items-center">
+          <LoadingSpinner />
+          <h1>Loading...</h1>
+      </div>
+    );
   }
   if (error) {
     return <div>{error}</div>;
   }
   if (!blogPosts || (Array.isArray(blogPosts) && blogPosts.length === 0)) {
-    return <div>Not have a detail for this category</div>;
+    return <div>No details available for this category</div>;
   }
 
   return (
