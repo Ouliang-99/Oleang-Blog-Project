@@ -115,10 +115,16 @@ export function ViewPostPage() {
           >
             <FacebookIconColor />
           </button>
-          <button className="flex items-center">
+          <button
+            onClick={() => window.open("https://th.linkedin.com/", "_blank")}
+            className="flex items-center"
+          >
             <LinkedinIconColor />
           </button>
-          <button className="flex items-center">
+          <button
+            onClick={() => window.open("https://x.com/", "_blank")}
+            className="flex items-center"
+          >
             <TwitterIconColor />
           </button>
         </div>
