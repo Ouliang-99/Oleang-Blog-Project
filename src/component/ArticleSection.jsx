@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { LoadingSpinner } from "@/component/icon";
+import { LoadingSpinner, MagnifyingIcon } from "@/component/icon";
 
 export function ArticleSection() {
   const categories = ["Highlight", "Cat", "Inspiration", "General"];
@@ -90,7 +90,7 @@ export function ArticleSection() {
 
   return (
     <>
-      <h1 className="flex text-xl font-semibold py-5">Latest articles</h1>
+      <h1 className="flex text-xl ml-6 font-semibold py-5">Latest articles</h1>
 
       <div className="bg-Brown-200 p-6 hidden sm:block">
         <Menubar className="flex justify-between items-center">
@@ -117,6 +117,9 @@ export function ArticleSection() {
               type="text"
               placeholder="Search"
             />
+            <span className="absolute right-3 top-1/2 transform -translate-y-1/2">
+              <MagnifyingIcon />
+            </span>
             {searchResults.length > 0 && keywordQuery && (
               <div className="absolute z-10 top-10 bg-white w-full border border-gray-300">
                 {searchResults.map((post) => (
@@ -134,8 +137,8 @@ export function ArticleSection() {
         </Menubar>
       </div>
 
-      <div className="bg-Brown-200 flex justify-center pt-5 sm:hidden">
-        <Card className="w-[400px]">
+      <div className="flex justify-center pt-5 sm:hidden">
+        <Card className="w-full bg-Brown-200">
           <CardContent>
             <form>
               <div className="grid w-full items-center gap-4">
@@ -148,35 +151,21 @@ export function ArticleSection() {
                       placeholder="Search"
                     />
                     <span className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-gray-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M10 4a6 6 0 100 12 6 6 0 000-12zM16 16l4 4"
-                        />
-                      </svg>
+                      <MagnifyingIcon />
                     </span>
-                    {searchResults.length > 0 &&
-                      keywordQuery && (
-                        <div className="absolute z-10 top-full bg-white w-full border border-gray-300">
-                          {searchResults.map((post) => (
-                            <div
-                              key={post.id}
-                              onClick={() => navigate(`/posts/${post.id}`)}
-                              className="p-2 hover:bg-gray-200 cursor-pointer"
-                            >
-                              {post.title}
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                    {searchResults.length > 0 && keywordQuery && (
+                      <div className="absolute z-10 top-full bg-white w-full border border-gray-300">
+                        {searchResults.map((post) => (
+                          <div
+                            key={post.id}
+                            onClick={() => navigate(`/posts/${post.id}`)}
+                            className="p-2 hover:bg-gray-200 cursor-pointer"
+                          >
+                            {post.title}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="flex flex-col space-y-1.5 text-left">
@@ -229,7 +218,7 @@ export function BlogCard(props) {
 
   return (
     <div>
-      <div className="flex flex-col gap-4 mt-14">
+      <div className="flex flex-col gap-4 mt-4">
         <div
           onClick={handleCardClick}
           className="relative h-[212px] sm:h-[360px] cursor-pointer"
@@ -290,7 +279,7 @@ export const AllBlogCard = ({ blogPosts, loading, error, loadMorePost }) => {
   return (
     <div className="flex flex-wrap justify-between ">
       {blogPosts.map((blog) => (
-        <div key={blog.id} className="w-full sm:w-1/3 p-2 hover:scale-105">
+        <div key={blog.id} className="w-full sm:w-1/3 p-6 hover:scale-105">
           <BlogCard
             id={blog.id}
             image={blog.image}
