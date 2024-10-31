@@ -28,9 +28,14 @@ export function LoginPage() {
           </button>
           <div className="flex flex-col justify-center gap-2 mt-5 sm:flex-row">
             <p>Don’t have any account?</p>
-            <button onClick={() => navigate("/signup")} className=" underline">
-              Sign up
-            </button>
+            <div className="flex items-center justify-center w-full">
+              <button
+                onClick={() => navigate("/signup")}
+                className=" underline"
+              >
+                Sign up
+              </button>
+            </div>
           </div>
         </div>
       </div>
