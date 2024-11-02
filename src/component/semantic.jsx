@@ -1,53 +1,148 @@
-import { LinkedinIcon, GithubIcon, GoogleIcon, HamburgerIcon, } from "./icon";
+import {
+  LinkedinIcon,
+  GithubIcon,
+  GoogleIcon,
+  HamburgerIcon,
+  BellIcon,
+  LogOutIcon,
+  ProfileIcon,
+  ResetIcon,
+  DropdownIcon,
+} from "./icon";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [userSetting, setUserSetting] = useState(false);
   const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
+  const toggleSetting = () => {
+    setUserSetting(!userSetting);
+  };
+
   return (
-    <nav className="flex items-center justify-between py-4 px-8 bg-Brown-100 border-b">
+    <nav className="flex items-center justify-between py-4 px-8 bg-Brown-100 border-b relative">
       <a href="/" className="text-2xl font-bold">
-        Thomson P<span className="text-green-500">.</span>
+        Oleang Blog<span className="text-green-500">.</span>
       </a>
-      <div className="hidden md:flex space-x-4">
-        <button
-          onClick={() => navigate("/login")}
-          className="px-9 py-2 rounded-full border"
-        >
-          Log in
-        </button>
-        <button
-          onClick={() => navigate("/signup")}
-          className="px-8 py-2 bg-gray-900 text-white rounded-full hover:bg-gray-700 transition-colors"
-        >
-          Sign up
-        </button>
-      </div>
+      {isLoggedIn ? (
+        <div className="hidden md:flex items-center ml-auto gap-4 pr-8 relative">
+          <button className="bg-white border border-Brown-200 p-2 rounded-full hover:bg-Brown-200">
+            <BellIcon />
+          </button>
+          <img
+            src="https://img5.pic.in.th/file/secure-sv1/oleang-img1.jpg"
+            className="border rounded-full w-10 h-10 hidden md:flex"
+          />
+          <div
+            onClick={toggleSetting}
+            className="hidden md:flex items-center cursor-pointer mr-6"
+          >
+            Oleang ja <DropdownIcon />
+          </div>
+          {userSetting && (
+            <div className="hidden md:flex flex-col absolute top-full right-0 mt-4 w-60 bg-white rounded-md shadow-lg py-2 z-20">
+              <button
+                className="flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 hover:border-b"
+                onClick={() => navigate("/profile")}
+              >
+                <ProfileIcon />
+                Profile
+              </button>
+              <button
+                className="flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 hover:border-b"
+                onClick={() => navigate("/reset-password")}
+              >
+                <ResetIcon />
+                Reset password
+              </button>
+              <button
+                className="flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 hover:border-b"
+                onClick={() => setIsLoggedIn(false)}
+              >
+                <LogOutIcon />
+                Log out
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="hidden md:flex space-x-4">
+          <button
+            onClick={() => navigate("/login")}
+            className="px-9 py-2 rounded-full border"
+          >
+            Log in
+          </button>
+          <button
+            onClick={() => navigate("/signup")}
+            className="px-8 py-2 bg-gray-900 text-white rounded-full hover:bg-gray-700 transition-colors"
+          >
+            Sign up
+          </button>
+        </div>
+      )}
       <button className="md:hidden" onClick={toggleDropdown}>
         <HamburgerIcon />
       </button>
       {isOpen && (
-        <div className="absolute top-16 mt-8 left-0 right-0 mx-auto w-5/6 bg-white rounded-lg shadow-lg md:hidden">
-          <div className="flex flex-col space-y-2 p-4">
-            <button
-              onClick={() => navigate("/login")}
-              className="px-4 py-2 rounded-full border text-center hover:bg-gray-100"
-            >
-              Log in
-            </button>
-            <button
-              onClick={() => navigate("/signup")}
-              className="px-4 py-2 bg-gray-900 text-white rounded-full hover:bg-gray-700 transition-colors text-center"
-            >
-              Sign up
-            </button>
-          </div>
+        <div className="absolute top-16 left-0 right-0 mx-auto w-5/6 bg-white rounded-lg shadow-lg md:hidden">
+          {isLoggedIn ? (
+            <div className="p-4">
+              <div className="flex justify-between items-center pb-2 border-b border-Brown-200 mx-5">
+                <img
+                  src="https://img5.pic.in.th/file/secure-sv1/oleang-img1.jpg"
+                  className="w-10 h-10 rounded-full shadow-md"
+                />
+                <a>Oleang ja</a>
+                <button className="bg-white border border-Brown-200 p-2 rounded-full hover:bg-Brown-200">
+                  <BellIcon />
+                </button>
+              </div>
+              <button
+                className="flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 hover:border-b"
+                onClick={() => navigate("/profile")}
+              >
+                <ProfileIcon />
+                Profile
+              </button>
+              <button
+                className="flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 hover:border-b"
+                onClick={() => navigate("/reset-password")}
+              >
+                <ResetIcon />
+                Reset password
+              </button>
+              <button
+                className="flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 hover:border-b"
+                onClick={() => setIsLoggedIn(false)}
+              >
+                <LogOutIcon />
+                Log out
+              </button>
+            </div>
+          ) : (
+            <div className="flex flex-col space-y-2 p-4">
+              <button
+                onClick={() => navigate("/login")}
+                className="px-4 py-2 rounded-full border text-center hover:bg-gray-100"
+              >
+                Log in
+              </button>
+              <button
+                onClick={() => navigate("/signup")}
+                className="px-4 py-2 bg-gray-900 text-white rounded-full hover:bg-gray-700 transition-colors text-center"
+              >
+                Sign up
+              </button>
+            </div>
+          )}
         </div>
       )}
     </nav>

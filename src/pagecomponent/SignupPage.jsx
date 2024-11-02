@@ -1,9 +1,20 @@
 import { NavBar } from "@/component/semantic";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { CurrectCircle ,XIcon  } from "@/component/icon";
 
 export function SignupPage() {
   const inputTags = ["Name", "Username", "Email", "Password"];
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+
+  const handleSignUp = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <>
@@ -24,7 +35,10 @@ export function SignupPage() {
             ))}
           </div>
           <div className="flex justify-center">
-            <button className="mt-4 px-6 rounded-full bg-black text-white py-2 hover:bg-gray-800">
+            <button
+              onClick={handleSignUp}
+              className="mt-4 px-6 rounded-full bg-black text-white py-2 hover:bg-gray-800"
+            >
               Sign up
             </button>
           </div>
@@ -36,6 +50,29 @@ export function SignupPage() {
             <button onClick={() => navigate("/signup")} className=" underline">
               Log in
             </button>
+
+            {showModal && (
+              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70">
+                <div className=" gap-6 bg-white flex flex-col items-center rounded-xl px-6 py-20 text-center relative">
+                  <CurrectCircle/>
+                  <button
+                    onClick={closeModal}
+                    className="   absolute top-7 right-7 text-black"
+                  >
+                    <XIcon />
+                  </button>
+                  <h2 className="mx-20 text-4xl font-semibold">
+                    Registration success
+                  </h2>
+                  <button
+                    onClick={() => navigate("/signup")}
+                    className="bg-black text-white px-8 py-4 rounded-full"
+                  >
+                    Continue
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
