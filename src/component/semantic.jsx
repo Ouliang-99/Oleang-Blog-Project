@@ -8,12 +8,14 @@ import {
   ProfileIcon,
   ResetIcon,
   DropdownIcon,
+  OutIcon,
 } from "./icon";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [userSetting, setUserSetting] = useState(false);
   const navigate = useNavigate();
@@ -38,6 +40,7 @@ export function NavBar() {
           </button>
           <img
             src="https://img5.pic.in.th/file/secure-sv1/oleang-img1.jpg"
+            alt="UserProfile"
             className="border rounded-full w-10 h-10 hidden md:flex"
           />
           <div
@@ -62,6 +65,15 @@ export function NavBar() {
                 <ResetIcon />
                 Reset password
               </button>
+              {isAdmin && (
+                <button
+                  className="flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 hover:border-b"
+                  onClick={() => navigate("/admin-panel")}
+                >
+                  <OutIcon />
+                  Admin panel
+                </button>
+              )}
               <button
                 className="flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 hover:border-b"
                 onClick={() => setIsLoggedIn(false)}
@@ -98,6 +110,7 @@ export function NavBar() {
               <div className="flex justify-between items-center pb-2 border-b border-Brown-200 mx-5">
                 <img
                   src="https://img5.pic.in.th/file/secure-sv1/oleang-img1.jpg"
+                  alt="UserProfile"
                   className="w-10 h-10 rounded-full shadow-md"
                 />
                 <a>Oleang ja</a>
@@ -166,7 +179,7 @@ export function HeroSection() {
         </div>
         <img
           src="https://img5.pic.in.th/file/secure-sv1/oleang-img1.jpg"
-          alt="Person with a cat"
+          alt="UserProfile"
           className="h-[530px] object-cover rounded-lg shadow-lg lg:w-1/3 mx-4 mb-8 lg:mb-0"
         />
         <div className="lg:w-1/3 lg:pl-8">
