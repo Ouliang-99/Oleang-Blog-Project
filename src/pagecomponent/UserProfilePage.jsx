@@ -103,7 +103,7 @@ export function UserProfilePage() {
         </div>
       </div>
       {showAlert && (
-        <div className="text-left fixed bottom-4 right-4 bg-green-600 text-white p-6 rounded-md">
+        <div className="text-left fixed bottom-4 md:right-4 bg-green-600 text-white p-6 rounded-md">
           <h1>Saved profile!</h1>
           <p>Your profile has been successfully updated</p>
         </div>
