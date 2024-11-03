@@ -7,6 +7,8 @@ import { LoginPage } from "./pagecomponent/LoginPage";
 import { SignupPage } from "./pagecomponent/SignupPage";
 import { UserProfilePage } from "./pagecomponent/UserProfilePage";
 import { ResetPasswordPage } from "./pagecomponent/ResetPasswordPage";
+import { AdminLoginPage } from "./pagecomponent/AdminLoginPage";
+import { ArticleManagement } from "./pagecomponent/ArticleManagement";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/posts/:postId" element={<ViewPostPage />} />
         <Route path="/profile" element={<UserProfilePage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/admin-login" element={<AdminLoginPage />} />
+        <Route path="/article-management" element={<ArticleManagement />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
