@@ -18,37 +18,40 @@ export function ResetPasswordPage() {
   return (
     <>
       <NavBar />
-      <div className="flex flex-col justify-center items-center mt-20">
-        <div className="w-2/3 flex flex-row items-center gap-5">
-          <span className="w-1/3 flex items-center gap-4 border-l-Brown-300">
+      <div className="flex md:hidden flex-row gap-5 p-8">
+        <button
+          className="flex items-center gap-4 hover:bg-gray-100 hover:border-b text-xl"
+          onClick={() => navigate("/profile")}
+        >
+          <ProfileIcon />
+          Profile
+        </button>
+        <button
+          className="whitespace-nowrap flex items-center gap-4 hover:bg-gray-100 hover:border-b text-xl"
+          onClick={() => navigate("/reset-password")}
+        >
+          <ResetIcon />
+          Reset password
+        </button>
+      </div>
+      <div className="flex flex-col justify-center items-center mt-5 md:mt-20">
+        <div className="md:w-2/3 flex flex-row items-center gap-5">
+          <span className="md:w-1/3 flex items-center gap-4 border-l-Brown-300">
             <img
               src="https://img5.pic.in.th/file/secure-sv1/oleang-img1.jpg"
               alt="UserProfile"
               className="rounded-full w-16 h-16"
             />
-            <h1 className="text-3xl font-semibold text-Brown-400">Oleang ja</h1>
-            <svg
-              width="1"
-              height="28"
-              viewBox="0 0 1 28"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <line
-                x1="0.5"
-                y1="2.18557e-08"
-                x2="0.499999"
-                y2="28"
-                stroke="#DAD6D1"
-              />
-            </svg>
+            <h1 className="whitespace-nowrap pr-2 border-r-2 border-Brown-200 text-3xl font-semibold text-Brown-400">
+              Oleang ja
+            </h1>
             <h1 className="text-3xl font-semibold text-Black">Profile</h1>
           </span>
         </div>
       </div>
-      <div className="flex justify-center mt-10 w-full">
-        <div className="flex flex-row w-2/3">
-          <div className="flex flex-col gap-5">
+      <div className="flex justify-center mt-10">
+        <div className="flex flex-row w-full md:w-2/3">
+          <div className="hidden md:flex flex-col gap-5">
             <button
               className="flex items-center gap-4 hover:bg-gray-100 hover:border-b text-xl"
               onClick={() => navigate("/profile")}
@@ -57,15 +60,15 @@ export function ResetPasswordPage() {
               Profile
             </button>
             <button
-              className="flex items-center gap-4 hover:bg-gray-100 hover:border-b text-xl"
+              className="whitespace-nowrap flex items-center gap-4 hover:bg-gray-100 hover:border-b text-xl"
               onClick={() => navigate("/reset-password")}
             >
               <ResetIcon />
               Reset password
             </button>
           </div>
-          <div className="flex flex-1 justify-center items-center">
-            <div className="w-2/3 p-6 py-16 rounded-xl bg-Brown-200 ">
+          <div className=" md:ml-4 flex flex-1 justify-center items-center">
+            <div className="w-full md:p-6 py-16 rounded-xl bg-Brown-200 ">
               <div className="px-16 flex flex-col gap-8">
                 <div>
                   <p>Name</p>
