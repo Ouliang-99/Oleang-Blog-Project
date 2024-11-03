@@ -68,7 +68,7 @@ export function NavBar() {
               {isAdmin && (
                 <button
                   className="flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 border-b"
-                  onClick={() => navigate("/admin-panel")}
+                  onClick={() => navigate("/admin-login")}
                 >
                   <OutIcon />
                   Admin panel
@@ -144,7 +144,7 @@ export function NavBar() {
               {isAdmin && (
                 <button
                   className="flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 hover:border-b"
-                  onClick={() => navigate("/admin-panel")}
+                  onClick={() => navigate("/admin-login")}
                 >
                   <OutIcon />
                   Admin panel

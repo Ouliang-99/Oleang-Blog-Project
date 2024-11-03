@@ -47,6 +47,7 @@ export function ArticleSection() {
         }
       );
       setBlogPosts(response.data.posts || []);
+      console.log(response.data.posts);
     } catch (err) {
       console.error("Error fetching posts:", err);
       setError("Error fetching posts");
