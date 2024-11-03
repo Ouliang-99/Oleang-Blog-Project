@@ -67,7 +67,7 @@ export function NavBar() {
               </button>
               {isAdmin && (
                 <button
-                  className="flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 hover:border-b"
+                  className="flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 border-b"
                   onClick={() => navigate("/admin-panel")}
                 >
                   <OutIcon />
@@ -133,12 +133,23 @@ export function NavBar() {
                 Reset password
               </button>
               <button
-                className="flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 hover:border-b"
+                className={`flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 hover:border-b ${
+                  isAdmin && "border-b"
+                }`}
                 onClick={() => setIsLoggedIn(false)}
               >
                 <LogOutIcon />
                 Log out
               </button>
+              {isAdmin && (
+                <button
+                  className="flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 hover:border-b"
+                  onClick={() => navigate("/admin-panel")}
+                >
+                  <OutIcon />
+                  Admin panel
+                </button>
+              )}
             </div>
           ) : (
             <div className="flex flex-col space-y-2 p-4">
