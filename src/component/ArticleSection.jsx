@@ -14,6 +14,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoadingSpinner, MagnifyingIcon } from "@/component/icon";
+import debounce from "lodash.debounce";
 
 export function ArticleSection() {
   const categories = ["Highlight", "Cat", "Inspiration", "General"];
@@ -32,36 +33,37 @@ export function ArticleSection() {
     fetchPosts(activeIndex, 1, newLimit);
   };
 
-  const fetchPosts = async (category = "", page = 1, limit = limitPage) => {
+  const fetchPosts = async (category = "", page = 1, limit = 10) => {
     setLoading(true);
     setError("");
+
+    const params = {
+      ...(category && category.trim() && { category }),
+      ...(keywordQuery && keywordQuery.trim() && { keyword: keywordQuery }),
+      page,
+      limit,
+    };
+
+    console.log("params", params);
+
     try {
-      const response = await axios.get(
-        `https://blog-post-project-api.vercel.app/posts?keyword=${keywordQuery}`,
-        {
-          params: {
-            category,
-            page,
-            limit,
-          },
-        }
-      );
-      setBlogPosts(response.data.posts || []);
-      console.log(response.data.posts);
+      const response = await axios.get(`/api/posts`, { params });
+      setBlogPosts(response.data.data || []);
+      console.log("response", response.data.data);
     } catch (err) {
-      console.error("Error fetching posts:", err);
-      setError("Error fetching posts");
+      console.error("Error fetching posts:", err.response || err.message);
+      setError(err.response?.data?.error || "Error fetching posts");
     } finally {
       setLoading(false);
     }
   };
 
+  console.log("blogPosts", blogPosts);
+
   const searchPosts = async (query) => {
     if (query) {
       try {
-        const response = await axios.get(
-          `https://blog-post-project-api.vercel.app/posts?keyword=${query}`
-        );
+        const response = await axios.get(`/api/posts?keyword=${query}`);
         setSearchResults(response.data.posts || []);
       } catch (err) {
         console.error("Error fetching search results:", err);
@@ -71,20 +73,28 @@ export function ArticleSection() {
     }
   };
 
+  const debouncedSearch = debounce((query) => {
+    searchPosts(query);
+  }, 500);
+
+  const debouncedKeywordQuery = debounce((query) => {
+    setKeywordQuery(query);
+  }, 500);
+
   useEffect(() => {
     fetchPosts(activeIndex, 1, limitPage);
   }, [keywordQuery, activeIndex, limitPage]);
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
-    setKeywordQuery(value);
-    searchPosts(value);
+    debouncedKeywordQuery(value);
+    debouncedSearch(value);
   };
 
   const handleCategoryClick = (category) => {
     setActiveIndex(category);
     setLimitPage(6);
-    fetchPosts(category.toLowerCase(), 1, 6);
+    fetchPosts(category, 1, 6);
   };
 
   const navigate = useNavigate();
@@ -286,7 +296,7 @@ export const AllBlogCard = ({ blogPosts, loading, error, loadMorePost }) => {
             image={blog.image}
             title={blog.title}
             description={blog.description}
-            category={blog.category}
+            category={blog.category_name}
             author={blog.author}
             date={blog.date}
           />
