@@ -44,12 +44,10 @@ export function ArticleSection() {
       limit,
     };
 
-    console.log("params", params);
-
     try {
       const response = await axios.get(`/api/posts`, { params });
       setBlogPosts(response.data.data || []);
-      console.log("response", response.data.data);
+
     } catch (err) {
       console.error("Error fetching posts:", err.response || err.message);
       setError(err.response?.data?.error || "Error fetching posts");
@@ -58,7 +56,6 @@ export function ArticleSection() {
     }
   };
 
-  console.log("blogPosts", blogPosts);
 
   const searchPosts = async (query) => {
     if (query) {
