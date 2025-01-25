@@ -1,27 +1,21 @@
 import { NavBar } from "@/component/semantic";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase";
+import axios from "axios";
 import { CurrectCircle, XIcon } from "@/component/icon";
 import { useUser } from "@/contexts/UserContext";
 
 export function LoginPage() {
   const inputTags = ["Email", "Password"];
+  const [isLoading, setIsloading] = useState(false);
   const navigate = useNavigate();
-  const { user, setUser } = useUser(); // เพิ่ม user จาก context
+  const { user, setUser } = useUser();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
-
-  // ตรวจสอบสถานะผู้ใช้
-  useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
-  }, [user, navigate]);
 
   const handleInputChange = (tag, value) => {
     const key = tag.toLowerCase();
@@ -33,36 +27,28 @@ export function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsloading(true);
     setError("");
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const response = await axios.post("/api/login", {
         email: formData.email,
         password: formData.password,
       });
 
-      if (error) {
-        setError(error.message);
-        return;
+      if (response.status === 200) {
+        const userData = response.data.user;
+
+        setIsloading(false);
+        setUser(userData);
+        setShowModal(true);
+      } else {
+        setIsloading(false);
+        setError(response.data.error || "Something went wrong!");
       }
-
-      // ดึงข้อมูลผู้ใช้
-      const { data: userData, error: userError } = await supabase
-        .from("users")
-        .select("*")
-        .single();
-
-      if (userError) {
-        console.error("Error fetching user data", userError);
-        return;
-      }
-
-      // เก็บข้อมูลผู้ใช้ใน context
-      setUser(userData);
-
-      setShowModal(true);
     } catch (err) {
-      setError("Error Can't Log in");
+      setIsloading(false);
+      setError("Incorrect username or password !");
       console.error(err);
     }
   };
@@ -70,6 +56,11 @@ export function LoginPage() {
   return (
     <>
       <NavBar />
+      {isLoading && (
+        <div className="absolute inset-0 bg-[#FFFFFF] bg-opacity-20 flex items-center justify-center z-10">
+          <div className="loader border-t-4 border-Brown-600 w-12 h-12 rounded-full animate-spin"></div>
+        </div>
+      )}
       <div className="flex justify-center items-center mt-20">
         <div className="px-10 pt-16 bg-Brown-200 rounded-2xl w-2/3 h-[27rem]">
           <h1 className="text-center text-3xl font-bold">Log in</h1>
@@ -117,7 +108,7 @@ export function LoginPage() {
                 <XIcon />
               </button>
               <h2 className="mx-20 text-4xl font-semibold">
-                Sign Up Completed !
+                Login Completed !
               </h2>
               <button
                 onClick={() => navigate("/")}
