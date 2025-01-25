@@ -1,9 +1,9 @@
-import { NavBar } from "@/component/semantic";
+import { NavBar, Footer } from "@/component/semantic";
 import { useState, useEffect } from "react";
 import { ProfileIcon, ResetIcon, XIcon } from "@/component/icon";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/contexts/UserContext";
-import { supabase } from "@/lib/supabase";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 import { useRef } from "react";
 import axios from "axios";
 
@@ -48,30 +48,6 @@ export function UserProfilePage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const uploadToCloudinary = async (file) => {
-    const cloudinaryUrl = import.meta.env.VITE_PUBLIC_CLOUDINARY_URL;
-    const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", uploadPreset);
-
-    try {
-      const response = await axios.post(cloudinaryUrl, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      return response.data.secure_url;
-    } catch (error) {
-      console.error(
-        "Cloudinary upload error:",
-        error.response ? error.response.data : error
-      );
-      throw new Error("Failed to upload to Cloudinary");
-    }
-  };
-
   const handleSave = async (e) => {
     e.preventDefault();
     setIsloading(true);
@@ -83,21 +59,23 @@ export function UserProfilePage() {
         profilePicUrl = await uploadToCloudinary(imageFile);
       }
 
-      const { data, error } = await supabase
-        .from("users")
-        .update({
+      const payload = {
+        userId: user.id,
+        updateData: {
           name: formData.name,
           username: formData.username,
           profile_pic: profilePicUrl,
-        })
-        .eq("id", user.id);
+        },
+      };
 
-      if (error) throw error;
+      const response = await axios.put("/api/update_user", payload);
 
-      setUser({ ...user, ...formData, profile_pic: profilePicUrl });
-      setShowAlert(true);
-      setTimeout(() => setShowAlert(false), 3000);
-      setIsloading(false);
+      if (response.status === 200) {
+        setIsloading(false);
+        setUser({ ...user, ...formData, profile_pic: profilePicUrl });
+        setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 3000);
+      }
     } catch (err) {
       setIsloading(false);
       console.error("Error updating user profile:", err);
@@ -134,7 +112,7 @@ export function UserProfilePage() {
             <img
               src={user.profile_pic}
               alt="UserProfile"
-              className="rounded-full w-16 h-16"
+              className="rounded-full w-16 h-16 object-cover"
             />
             <h1 className="whitespace-nowrap pr-2 border-r-2 border-Brown-200 text-3xl font-semibold text-Brown-400">
               {user.name}
@@ -222,19 +200,6 @@ export function UserProfilePage() {
           </div>
         </div>
       </div>
-      {isLoading && (
-        <div className="flex font-semibold text-[#2F5FAC] justify-end mr-16 pb-20 mt-0 cursor-pointer">
-          <button
-            type="buttton"
-            onClick={() => {
-              setIsModalOpen(true);
-            }}
-            className="hover:scale-105"
-          >
-            Delete Course
-          </button>
-        </div>
-      )}
       {showAlert && (
         <div className="text-left fixed bottom-4 md:right-4 bg-green-600 text-white p-6 rounded-md">
           <h1>Saved profile!</h1>

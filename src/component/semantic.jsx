@@ -48,7 +48,7 @@ export function NavBar() {
           <img
             src={user.profile_pic}
             alt="UserProfile"
-            className="border rounded-full w-10 h-10 hidden md:flex"
+            className="border rounded-full w-10 h-10 hidden md:flex object-cover"
           />
           <div
             onClick={toggleSetting}
@@ -202,7 +202,7 @@ export function HeroSection() {
         />
         <div className="lg:w-1/3 lg:pl-8">
           <h2 className="text-xl font-semibold mb-2">-Author</h2>
-          <h3 className="text-2xl font-bold mb-4">Thompson P.</h3>
+          <h3 className="text-2xl font-bold mb-4">wannachok.t</h3>
           <p className="text-gray-500 mb-4">
             I am a pet enthusiast and freelance writer who specializes in animal
             behavior and care. With a deep love for cats, I enjoy sharing
