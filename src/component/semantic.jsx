@@ -12,13 +12,13 @@ import {
 } from "./icon";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "@/contexts/UserContext";
 
 export function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [userSetting, setUserSetting] = useState(false);
   const navigate = useNavigate();
+  const { user, setUser } = useUser();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -28,18 +28,25 @@ export function NavBar() {
     setUserSetting(!userSetting);
   };
 
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("userData");
+    localStorage.removeItem("session");
+    navigate("/login");
+  };
+
   return (
     <nav className="flex items-center justify-between py-4 px-8 bg-Brown-100 border-b relative">
       <a href="/" className="text-2xl font-bold">
         Oleang Blog<span className="text-green-500">.</span>
       </a>
-      {isLoggedIn ? (
+      {user ? (
         <div className="hidden md:flex items-center ml-auto gap-4 pr-8 relative">
           <button className="bg-white border border-Brown-200 p-2 rounded-full hover:bg-Brown-200">
             <BellIcon />
           </button>
           <img
-            src="https://img5.pic.in.th/file/secure-sv1/oleang-img1.jpg"
+            src={user.profile_pic}
             alt="UserProfile"
             className="border rounded-full w-10 h-10 hidden md:flex"
           />
@@ -47,7 +54,7 @@ export function NavBar() {
             onClick={toggleSetting}
             className="hidden md:flex items-center cursor-pointer mr-6"
           >
-            Oleang ja <DropdownIcon />
+            {user.name} <DropdownIcon />
           </div>
           {userSetting && (
             <div className="hidden md:flex flex-col absolute top-full right-0 mt-4 w-60 bg-white rounded-md shadow-lg py-2 z-20">
@@ -65,7 +72,7 @@ export function NavBar() {
                 <ResetIcon />
                 Reset password
               </button>
-              {isAdmin && (
+              {user.isAdmin && (
                 <button
                   className="flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 border-b"
                   onClick={() => navigate("/admin-login")}
@@ -76,7 +83,7 @@ export function NavBar() {
               )}
               <button
                 className="flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 hover:border-b"
-                onClick={() => setIsLoggedIn(false)}
+                onClick={handleLogout}
               >
                 <LogOutIcon />
                 Log out
@@ -105,15 +112,15 @@ export function NavBar() {
       </button>
       {isOpen && (
         <div className="absolute top-16 left-0 right-0 mx-auto w-5/6 bg-white rounded-lg shadow-lg md:hidden">
-          {isLoggedIn ? (
+          {user ? (
             <div className="p-4">
               <div className="flex justify-between items-center pb-2 border-b border-Brown-200 mx-5">
                 <img
-                  src="https://img5.pic.in.th/file/secure-sv1/oleang-img1.jpg"
+                  src={user.profileImage || "https://via.placeholder.com/150"}
                   alt="UserProfile"
                   className="w-10 h-10 rounded-full shadow-md"
                 />
-                <a>Oleang ja</a>
+                <span>{user.name}</span>
                 <button className="bg-white border border-Brown-200 p-2 rounded-full hover:bg-Brown-200">
                   <BellIcon />
                 </button>
@@ -134,14 +141,14 @@ export function NavBar() {
               </button>
               <button
                 className={`flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 hover:border-b ${
-                  isAdmin && "border-b"
+                  user.isAdmin && "border-b"
                 }`}
-                onClick={() => setIsLoggedIn(false)}
+                onClick={handleLogout}
               >
                 <LogOutIcon />
                 Log out
               </button>
-              {isAdmin && (
+              {user.isAdmin && (
                 <button
                   className="flex items-center w-full text-left px-4 py-2 gap-4 hover:bg-gray-100 hover:border-b"
                   onClick={() => navigate("/admin-login")}

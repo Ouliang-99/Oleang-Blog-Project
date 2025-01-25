@@ -69,7 +69,12 @@ export function ViewPostPage() {
     setShowModal(false);
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="absolute inset-0 bg-[#FFFFFF] bg-opacity-20 flex items-center justify-center z-10">
+        <div className="loader border-t-4 border-Brown-600 w-12 h-12 rounded-full animate-spin"></div>
+      </div>
+    );
   if (error) return <div>{error}</div>;
   if (!post) return <div>No post found</div>;
 
