@@ -47,7 +47,6 @@ export function ArticleSection() {
     try {
       const response = await axios.get(`/api/posts`, { params });
       setBlogPosts(response.data.data || []);
-
     } catch (err) {
       console.error("Error fetching posts:", err.response || err.message);
       setError(err.response?.data?.error || "Error fetching posts");
@@ -55,7 +54,6 @@ export function ArticleSection() {
       setLoading(false);
     }
   };
-
 
   const searchPosts = async (query) => {
     if (query) {
@@ -272,8 +270,7 @@ export const AllBlogCard = ({ blogPosts, loading, error, loadMorePost }) => {
   if (loading) {
     return (
       <div className="flex flex-col items-center">
-        <LoadingSpinner />
-        <h1>Loading...</h1>
+        <div className="loader border-t-4 border-Brown-600 w-12 h-12 rounded-full animate-spin"></div>
       </div>
     );
   }
