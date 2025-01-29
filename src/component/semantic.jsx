@@ -48,7 +48,7 @@ export function NavBar() {
           <img
             src={user.profile_pic}
             alt="UserProfile"
-            className="border rounded-full w-10 h-10 hidden md:flex object-cover"
+            className="border rounded-full w-5 h-5 sm:w-10 sm:h-10 hidden md:flex object-cover"
           />
           <div
             onClick={toggleSetting}
@@ -116,7 +116,7 @@ export function NavBar() {
             <div className="p-4">
               <div className="flex justify-between items-center pb-2 border-b border-Brown-200 mx-5">
                 <img
-                  src={user.profileImage || "https://via.placeholder.com/150"}
+                  src={user.profile_pic || "https://via.placeholder.com/150"}
                   alt="UserProfile"
                   className="w-10 h-10 rounded-full shadow-md"
                 />
