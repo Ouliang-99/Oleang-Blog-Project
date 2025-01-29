@@ -252,8 +252,8 @@ export function BlogCard(props) {
           </p>
           <div className="flex items-center text-sm">
             <img
-              className="w-8 h-8 rounded-full mr-2"
-              src="https://res.cloudinary.com/dcbpjtd1r/image/upload/v1728449784/my-blog-post/xgfy0xnvyemkklcqodkg.jpg"
+              className="w-8 h-8 rounded-full mr-2 object-cover"
+              src="https://img5.pic.in.th/file/secure-sv1/oleang-img1.jpg"
               alt={props.author}
             />
             <span>{props.author}</span>
@@ -291,7 +291,7 @@ export const AllBlogCard = ({ blogPosts, loading, error, loadMorePost }) => {
             title={blog.title}
             description={blog.description}
             category={blog.category_name}
-            author={blog.author}
+            author="OLEANG"
             date={blog.date}
           />
         </div>
