@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import api from "@/config/axios";
 import ReactMarkdown from "react-markdown";
 import { useUser } from "@/contexts/UserContext";
 import { NavBar, Footer } from "@/component/semantic";
@@ -40,12 +40,12 @@ export function ViewPostPage() {
       try {
         const [postResponse, likeResponse, commentResponse] = await Promise.all(
           [
-            axios.get(`/api/posts/${postId}`),
-            axios.post("/api/isLiked", {
+            api.get(`/api/posts/${postId}`),
+            api.post("/api/isLiked", {
               user_id: user.id,
               post_id: postId,
             }),
-            axios.get(`/api/comments/${postId}`),
+            api.get(`/api/comments/${postId}`),
           ]
         );
 
@@ -98,7 +98,7 @@ export function ViewPostPage() {
     }
 
     try {
-      const response = await axios.post("/api/likes", {
+      const response = await api.post("/api/likes", {
         user_id: user.id,
         post_id: postId,
       });
@@ -114,7 +114,7 @@ export function ViewPostPage() {
 
   const handleUnlike = async () => {
     try {
-      const response = await axios.post("/api/unlike", {
+      const response = await api.post("/api/unlike", {
         user_id: user.id,
         post_id: postId,
       });
@@ -144,7 +144,7 @@ export function ViewPostPage() {
     }
 
     try {
-      const response = await axios.post(`/api/comments/${postId}`, {
+      const response = await api.post(`/api/comments/${postId}`, {
         user_id: user.id,
         comment_text: commentText,
       });

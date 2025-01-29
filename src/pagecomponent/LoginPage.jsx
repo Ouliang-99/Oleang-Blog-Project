@@ -1,9 +1,9 @@
 import { NavBar } from "@/component/semantic";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { CurrectCircle, XIcon } from "@/component/icon";
 import { useUser } from "@/contexts/UserContext";
+import api from "@/config/axios";
 
 export function LoginPage() {
   const inputTags = ["Email", "Password"];
@@ -31,7 +31,7 @@ export function LoginPage() {
     setError("");
 
     try {
-      const response = await axios.post("/api/login", {
+      const response = await api.post("/api/login", {
         email: formData.email,
         password: formData.password,
       });

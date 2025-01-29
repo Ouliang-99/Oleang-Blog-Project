@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import axios from "axios";
+import api from "@/config/axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoadingSpinner, MagnifyingIcon } from "@/component/icon";
@@ -45,7 +45,7 @@ export function ArticleSection() {
     };
 
     try {
-      const response = await axios.get(`/api/posts`, { params });
+      const response = await api.get(`/api/posts`, { params });
       setBlogPosts(response.data.data || []);
     } catch (err) {
       console.error("Error fetching posts:", err.response || err.message);
@@ -58,7 +58,7 @@ export function ArticleSection() {
   const searchPosts = async (query) => {
     if (query) {
       try {
-        const response = await axios.get(`/api/posts?keyword=${query}`);
+        const response = await api.get(`/api/posts?keyword=${query}`);
         setSearchResults(response.data.posts || []);
       } catch (err) {
         console.error("Error fetching search results:", err);
