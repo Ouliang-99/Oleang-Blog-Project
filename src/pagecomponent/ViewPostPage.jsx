@@ -38,17 +38,9 @@ export function ViewPostPage() {
       setError("");
 
       try {
-        const [postResponse, likeResponse, commentResponse] = await Promise.all(
-          [
-            api.get(`/api/posts/${postId}`),
-            api.post("/api/isLiked", {
-              user_id: user.id,
-              post_id: postId,
-            }),
-            api.get(`/api/comments/${postId}`),
-          ]
-        );
-
+        // First, fetch the post data
+        const postResponse = await api.get(`/api/posts/${postId}`);
+        
         if (postResponse.status === 200 && postResponse.data.success) {
           setPost(postResponse.data.data);
           setLikesCount(postResponse.data.data.likes_count);
@@ -57,14 +49,22 @@ export function ViewPostPage() {
           return;
         }
 
-        if (likeResponse.status === 200 && likeResponse.data.success) {
-          setIsLiked(likeResponse.data.isLiked);
-        } else {
-          setIsLiked(false);
-        }
-
+        // Fetch comments
+        const commentResponse = await api.get(`/api/comments/${postId}`);
         if (commentResponse.status === 200 && commentResponse.data.success) {
           setComments(commentResponse.data.comments);
+        }
+
+        // Only check likes if user is logged in
+        if (user?.id) {
+          const likeResponse = await api.post("/api/isLiked", {
+            user_id: user.id,
+            post_id: postId,
+          });
+
+          if (likeResponse.status === 200 && likeResponse.data.success) {
+            setIsLiked(likeResponse.data.isLiked);
+          }
         }
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -75,7 +75,7 @@ export function ViewPostPage() {
     };
 
     fetchPostDetails();
-  }, [postId, user.id]);
+  }, [postId, user?.id]); // Changed dependency to user?.id
 
   const copyToClipboard = async () => {
     try {
@@ -92,7 +92,7 @@ export function ViewPostPage() {
   };
 
   const handleLike = async () => {
-    if (!user) {
+    if (!user?.id) {
       setShowModal(true);
       return;
     }
@@ -138,13 +138,13 @@ export function ViewPostPage() {
   };
 
   const handleSendClick = async () => {
-    if (!user) {
+    if (!user?.id) {
       setShowModal(true);
       return;
     }
 
     try {
-      const response = await api.post(`/api/comments/${postId}`, {
+      await api.post(`/api/comments/${postId}`, {
         user_id: user.id,
         comment_text: commentText,
       });
@@ -163,12 +163,12 @@ export function ViewPostPage() {
 
       setCommentText("");
       setShowCommentAlert(true);
-      commentAlert();
+      setTimeout(() => setShowCommentAlert(false), 3000);
     } catch (error) {
       console.error("Error cannot comment:", error);
     }
   };
-
+  
   const closeModal = () => {
     setShowModal(false);
   };
