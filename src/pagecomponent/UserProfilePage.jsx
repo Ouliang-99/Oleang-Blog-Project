@@ -141,7 +141,7 @@ export function UserProfilePage() {
           </div>
           <div className="flex flex-1 justify-center items-center md:ml-4">
             <div className="p-2 md:p-10 rounded-xl bg-Brown-200 w-full ">
-              <div className="flex pl-10 flex-col md:flex-row items-center justify-start mt-10 border-b border-Brown-300 m-10 pb-10">
+              <div className="flex sm:pl-10 flex-col md:flex-row items-center justify-start mt-10 border-b border-Brown-300 m-10 pb-10">
                 <img
                   src={previewImage || user.profile_pic}
                   alt="UserProfile"
@@ -156,7 +156,7 @@ export function UserProfilePage() {
                 />
                 <button
                   type="button"
-                  className="text-l ml-32 bg-white border border-black hover:bg-Brown-100 py-4 px-10 rounded-full w-1/3 font-semibold"
+                  className="text-l mt-5 sm:mt-0 sm:ml-32 bg-white border border-black hover:bg-Brown-100 py-4 px-10 rounded-full sm:w-1/3 w-full font-semibold"
                   onClick={handleClickUploadImage}
                 >
                   Upload profile picture
