@@ -2,6 +2,7 @@ import { NavBar } from "@/component/semantic";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { CurrectCircle, XIcon } from "@/component/icon";
+import api from "@/config/axios";
 
 export function SignupPage() {
   const inputTags = ["Name", "Username", "Email", "Password"];
@@ -38,20 +39,14 @@ export function SignupPage() {
     }
 
     try {
-      const response = await fetch("/api/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-        }),
+      const response = await api.post("/api/signup", {
+        name: formData.name,
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
       });
 
-      const result = await response.json();
+      const result = response;
 
       if (!result.success) {
         setError(result.error);

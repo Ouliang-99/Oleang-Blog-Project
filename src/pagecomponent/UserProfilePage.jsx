@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "@/contexts/UserContext";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 import { useRef } from "react";
-import axios from "axios";
+import api from "@/config/axios";
 
 export function UserProfilePage() {
   const fileInputRef = useRef(null);
@@ -68,7 +68,7 @@ export function UserProfilePage() {
         },
       };
 
-      const response = await axios.put("/api/update_user", payload);
+      const response = await api.put("/api/update_user", payload);
 
       if (response.status === 200) {
         setIsloading(false);
